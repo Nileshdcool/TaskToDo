@@ -4,3 +4,4 @@ This app is resposible for creating daily tasks and marking them as completed on
 ## Entity Framework Commands 
 
 dotnet ef migrations add InitialCreate -s API -p Persistence
+dotnet ef database

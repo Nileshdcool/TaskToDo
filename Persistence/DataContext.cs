@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Task = Domain.Task;
 
 namespace Persistence
 {
@@ -8,6 +9,6 @@ namespace Persistence
         {
         }
 
-        public DbSet<Domain.Task> Tasks { get; set; }
+        public DbSet<Task> Tasks { get; set; }
     }
 }
