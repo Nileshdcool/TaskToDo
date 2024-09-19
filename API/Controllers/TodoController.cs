@@ -1,37 +1,44 @@
 using Microsoft.AspNetCore.Mvc;
-using Persistence;
 using Domain;
-using Microsoft.EntityFrameworkCore;
+using MediatR;
+using Application.Todos;
 
 namespace API.Controllers
 {
-    public class TodoController(DataContext context) : BaseApiController
+    public class TodoController() : BaseApiController
     {
-        private readonly DataContext _context = context;
 
         [HttpGet]  // GET /api/todo
         public async Task<ActionResult<List<Todo>>> GetTodos()
         {
-            return await _context.Todos.ToListAsync();
+            return await Mediator.Send(new List.Query());
         }
 
         [HttpGet("{id}")]  // GET /api/todo/{id}
         public async Task<ActionResult<Todo>> GetTodo(Guid id)
         {
-            var todo = await _context.Todos.FindAsync(id);
-            if (todo == null)
-            {
-                return NotFound();
-            }
-            return todo;
+            return await Mediator.Send(new Details.Query { Id = id });
         }
 
         [HttpPost]  // POST /api/todo
-        public async Task<ActionResult<Todo>> CreateTodo(Todo todo)
+        public async Task<IActionResult> CreateTodo(Todo todo)
         {
-            _context.Todos.Add(todo);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetTodo", new { id = todo.Id }, todo);
+            await Mediator.Send(new Create.Command { Todo = todo });
+            return Ok();
+        }
+
+        [HttpPut("{id}")]  // PUT /api/todo/{id}
+        public async Task<ActionResult<Todo>> EditTodo(Guid id, Todo todo)
+        {
+            todo.Id = id;
+            return await Mediator.Send(new Edit.Command { Todo = todo });
+        }
+
+        [HttpDelete("{id}")]  // DELETE /api/todo/{id}
+        public async Task<ActionResult<Unit>> DeleteTodo(Guid id)
+        {
+            await Mediator.Send(new Delete.Command { Id = id });
+            return Ok();
         }
 
     }
