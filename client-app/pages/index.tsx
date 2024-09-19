@@ -111,7 +111,7 @@ export default HomePage;
 
 export const getServerSideProps: GetServerSideProps = async () => {
     try {
-        const response = await axios.get("http://localhost:3000/api/todo");
+        const response = await axios.get("http://localhost:5127/api/Todo");
         const initialTodos: Todo[] = response.data;
 
         return {
