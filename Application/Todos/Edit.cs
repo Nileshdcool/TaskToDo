@@ -1,3 +1,4 @@
+using AutoMapper;
 using Domain;
 using MediatR;
 using Persistence;
@@ -11,13 +12,10 @@ namespace Application.Todos
             public required Todo Todo { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command, Todo>
+        public class Handler(DataContext context, IMapper mapper) : IRequestHandler<Command, Todo>
         {
-            private readonly DataContext _context;
-            public Handler(DataContext context)
-            {
-                _context = context;
-            }
+            private readonly DataContext _context = context;
+            private readonly IMapper _mapper = mapper;
 
             public async Task<Todo> Handle(Command request, CancellationToken cancellationToken)
             {
@@ -27,10 +25,7 @@ namespace Application.Todos
                     throw new Exception("Todo not found");
                 }
 
-                todo.Name = request.Todo.Name;
-                todo.Description = request.Todo.Description;
-                todo.Comments = request.Todo.Comments;
-                todo.IsComplete = request.Todo.IsComplete;
+                _mapper.Map(request.Todo, todo);
 
                 await _context.SaveChangesAsync(cancellationToken);
 

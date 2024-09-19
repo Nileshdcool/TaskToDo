@@ -1,11 +1,8 @@
-import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { TodoState } from '@/types/todo-state.interface';
+import { fetchTodos as fetchTodosService, createTodo as createTodoService, updateTodo 
+    as updateTodoService, deleteTodo as deleteTodoService } from '@/services/todo.service';
 import { Todo } from '@/types/todo.interface';
-
-interface TodoState {
-    todos: Todo[];
-    error: string | null;
-}
 
 const initialState: TodoState = {
     todos: [],
@@ -13,23 +10,19 @@ const initialState: TodoState = {
 };
 
 export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-    const response = await axios.get('http://localhost:5127/api/Todo');
-    return response.data;
+    return await fetchTodosService();
 });
 
 export const createTodo = createAsyncThunk('todos/createTodo', async (newTodo: Omit<Todo, 'id'>) => {
-    const response = await axios.post('/api/todo', newTodo);
-    return response.data;
+    return await createTodoService(newTodo);
 });
 
 export const updateTodo = createAsyncThunk('todos/updateTodo', async ({ id, updatedTodo }: { id: string, updatedTodo: Partial<Todo> }) => {
-    await axios.put(`/api/todo/${id}`, updatedTodo);
-    return { id, updatedTodo };
+    return await updateTodoService(id, updatedTodo);
 });
 
 export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id: string) => {
-    await axios.delete(`/api/todo/${id}`);
-    return id;
+    return await deleteTodoService(id);
 });
 
 const todoSlice = createSlice({
@@ -38,27 +31,24 @@ const todoSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(fetchTodos.fulfilled, (state, action: PayloadAction<Todo[]>) => {
+            .addCase(fetchTodos.fulfilled, (state, action) => {
                 state.todos = action.payload;
             })
-            .addCase(createTodo.fulfilled, (state, action: PayloadAction<Todo>) => {
+            .addCase(createTodo.fulfilled, (state, action) => {
                 state.todos.push(action.payload);
             })
-            .addCase(updateTodo.fulfilled, (state, action: PayloadAction<{ id: string, updatedTodo: Partial<Todo> }>) => {
-                const index = state.todos.findIndex(todo => todo.id === action.payload.id);
+            .addCase(updateTodo.fulfilled, (state, action) => {
+                const index = state.todos.findIndex((todo) => todo.id === action.payload.id);
                 if (index !== -1) {
-                    state.todos[index] = { ...state.todos[index], ...action.payload.updatedTodo };
+                    state.todos[index] = {
+                        ...state.todos[index],
+                        ...action.payload.updatedTodo,
+                    };
                 }
             })
-            .addCase(deleteTodo.fulfilled, (state, action: PayloadAction<string>) => {
-                state.todos = state.todos.filter(todo => todo.id !== action.payload);
-            })
-            .addMatcher(
-                (action) => action.type.endsWith('/rejected'),
-                (state, action:any) => {
-                    state.error = action.error.message || 'An unexpected error occurred.';
-                }
-            );
+            .addCase(deleteTodo.fulfilled, (state, action) => {
+                state.todos = state.todos.filter((todo) => todo.id !== action.payload);
+            });
     },
 });
 
