@@ -1,3 +1,5 @@
+using API.Middleware;
+
 namespace API.Extensions
 {
     public static class ApplicationBuilderExtensions
@@ -14,6 +16,8 @@ namespace API.Extensions
             app.UseRouting();
             app.UseCors("CorsPolicy");
             app.UseAuthorization();
+
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

@@ -15,7 +15,7 @@ namespace Application.Todos
 
             public async Task<List<Todo>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await _context.Todos.ToListAsync();
+                return await _context.Todos.ToListAsync(cancellationToken: cancellationToken);
             }
         }
     }

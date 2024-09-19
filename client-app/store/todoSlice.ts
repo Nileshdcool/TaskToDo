@@ -13,8 +13,9 @@ export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
     return await fetchTodosService();
 });
 
-export const createTodo = createAsyncThunk('todos/createTodo', async (newTodo: Omit<Todo, 'id'>) => {
-    return await createTodoService(newTodo);
+export const createTodo = createAsyncThunk('todos/createTodo', async (newTodo: Todo) => {
+    await createTodoService(newTodo);
+    return newTodo;
 });
 
 export const updateTodo = createAsyncThunk('todos/updateTodo', async ({ id, updatedTodo }: { id: string, updatedTodo: Partial<Todo> }) => {
@@ -22,7 +23,8 @@ export const updateTodo = createAsyncThunk('todos/updateTodo', async ({ id, upda
 });
 
 export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id: string) => {
-    return await deleteTodoService(id);
+    await deleteTodoService(id);
+    return id;
 });
 
 const todoSlice = createSlice({

@@ -19,16 +19,9 @@ namespace Application.Todos
 
             public async Task<Todo> Handle(Command request, CancellationToken cancellationToken)
             {
-                var todo = await _context.Todos.FindAsync([request.Todo.Id], cancellationToken: cancellationToken);
-                if (todo == null)
-                {
-                    throw new Exception("Todo not found");
-                }
-
+                var todo = await _context.Todos.FindAsync([request.Todo.Id], cancellationToken: cancellationToken) ?? throw new Exception("Todo not found");
                 _mapper.Map(request.Todo, todo);
-
                 await _context.SaveChangesAsync(cancellationToken);
-
                 return todo;
             }
         }

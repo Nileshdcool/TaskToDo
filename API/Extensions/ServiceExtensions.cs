@@ -2,6 +2,7 @@ using Application.Core;
 using Application.Todos;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using FluentValidation;
 
 namespace API.Extensions
 {
@@ -25,10 +26,9 @@ namespace API.Extensions
                     policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
                 });
             });
-
+            
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(List.Handler).Assembly));
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-
             return services;
         }
     }

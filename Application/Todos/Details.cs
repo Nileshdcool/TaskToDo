@@ -17,11 +17,7 @@ namespace Application.Todos
             private readonly DataContext _context = context;
             public async Task<Todo> Handle(Query request, CancellationToken cancellationToken)
             {
-                var todo = await _context.Todos.FindAsync([request.Id], cancellationToken: cancellationToken);
-                if (todo == null)
-                {
-                    throw new Exception("Todo not found");
-                }
+                var todo = await _context.Todos.FindAsync([request.Id], cancellationToken: cancellationToken) ?? throw new Exception("Todo not found");
                 return todo;
             }
         }
