@@ -3,32 +3,34 @@ using Domain;
 using Persistence;
 using FluentValidation;
 using System.Data;
+using Application.Core;
 
 namespace Application.Todos
 {
     public class Create
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public required Todo Todo { get; set; }
         }
 
-        public class CommandValidator : AbstractValidator<Todo> {
-            public CommandValidator() {
-                RuleFor(x => x.Name).NotEmpty().MinimumLength(10);
-                RuleFor(x => x.Comments).MaximumLength(100);
-                RuleFor(x => x.Description).NotEmpty().MaximumLength(100);
+        public class CommandValidator : AbstractValidator<Command> {
+            public CommandValidator() 
+            {
+                RuleFor(x => x.Todo).SetValidator(new TodoValidator());
             }
         }
 
-        public class Handler(DataContext context) : IRequestHandler<Command>
+        public class Handler(DataContext context) : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext _context = context;
 
-            public async Task Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 _context.Todos.Add(request.Todo);
-                await _context.SaveChangesAsync(cancellationToken);
+                var result = await _context.SaveChangesAsync(cancellationToken) > 0;
+                if (!result) return Result<Unit>.Failure("Failed to create activity");
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }
