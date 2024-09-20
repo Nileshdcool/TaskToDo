@@ -1,4 +1,6 @@
 export const MESSAGES = {
+    APP_NAME: "My Todo App",
+    NO_DUE_DATE: "No due date",
     SEARCH_PLACEHOLDER: "Search...",
     NO_RESULTS_FOUND: "No results found.",
     LOADING: "Loading...",

@@ -1,3 +1,4 @@
+import { MESSAGES } from '@/constants/messages';
 import { TodoItemProps } from '@/types/todo-item-props.interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { differenceInDays, isBefore } from 'date-fns';
@@ -13,7 +14,7 @@ const TodoItem: React.FC<TodoItemProps> = ({ todo, onUpdate, onDelete }) => {
                 <h2 className="text-xl font-bold">{todo.name}</h2>
                 <p>{todo.description}</p>
                 <p>{todo.comments}</p>
-                <p>Due Date: {todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : 'No due date'}</p>
+                <p>Due Date: {todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : MESSAGES.NO_DUE_DATE}</p>
                 <p>{todo.isComplete ? 'Complete' : 'Incomplete'}</p>
             </div>
             <div className="flex mt-2 md:mt-0">

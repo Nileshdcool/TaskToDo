@@ -17,6 +17,7 @@ import TodoFilters from '@/components/TodoFilters';
 import TodoStats from '@/components/TodoStats';
 import Pagination from '@/components/Pagination';
 import { Tab } from '@/enums/tab.enums';
+import { MESSAGES } from '@/constants/messages';
 
 const HomePage = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -56,7 +57,7 @@ const HomePage = () => {
         dispatch(createTodo(todoWithId))
             .unwrap()
             .then(() => {
-                toast.success('Todo created successfully');
+                toast.success(MESSAGES.ITEM_ADDED);
             });
     };
 
@@ -68,7 +69,7 @@ const HomePage = () => {
                 setTimeout(() => {
                     setIsTaskCompleted(false);
                 }, 5000);
-                toast.success('Todo updated successfully');
+                toast.success(MESSAGES.ITEM_UPDATED);
             })
             .catch((err) => {
                 setIsTaskCompleted(false);
@@ -79,7 +80,7 @@ const HomePage = () => {
     const handleDeleteTodo = (id: string) => {
         dispatch(deleteTodo(id))
             .unwrap()
-            .then(() => toast.success('Todo deleted successfully'))
+            .then(() => toast.success(MESSAGES.ITEM_DELETED))
             .catch((err) => toast.error(`Error deleting todo: ${err.message}`));
     };
 
