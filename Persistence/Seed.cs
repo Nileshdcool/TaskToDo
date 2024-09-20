@@ -15,12 +15,14 @@ namespace Persistence
                     Description = "Auth Module",
                     Comments = "This is a comment",
                     IsComplete = false,
+                    DueDate = DateTime.Now.AddDays(7),
                 },
                 new() {
                     Name = "Task 2",
                     Description = "Dashboard UI",
                     Comments = "This is a comment",
                     IsComplete = false,
+                    DueDate = DateTime.Now.AddDays(2),
                 },
             };
 

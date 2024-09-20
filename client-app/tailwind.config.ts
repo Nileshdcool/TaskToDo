@@ -8,12 +8,22 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      animation: {
+        'pulse-slow': 'pulse 2s infinite',
+      },
+      keyframes: {
+        pulse: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.5' },
+        },
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
     },
   },
+  variants: {},
   plugins: [],
 };
 export default config;

@@ -44,7 +44,7 @@ const todoSlice = createSlice({
                 if (index !== -1) {
                     state.todos[index] = {
                         ...state.todos[index],
-                        ...action.payload.updatedTodo,
+                        ...action.payload,
                     };
                 }
             })
