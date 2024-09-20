@@ -1,4 +1,5 @@
 using Application.Core;
+using Domain;
 using MediatR;
 using Persistence;
 
@@ -20,7 +21,7 @@ namespace Application.Todos
                 var todo = await _context.Todos.FindAsync([request.Id], cancellationToken: cancellationToken) ?? throw new Exception("Todo not found");
                 _context.Todos.Remove(todo);
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
-                if (!result) return Result<Unit>.Failure("Failed to delete the activity");
+                if (!result) return Result<Unit>.Failure(Messages.FAILED_TO_DELETE_ACTIVITY);
                 return Result<Unit>.Success(Unit.Value);
             }
         }

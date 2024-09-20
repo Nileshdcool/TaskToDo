@@ -1,7 +1,13 @@
 namespace Domain
 {
     public static class Messages
-    {
+    {   
+        public const string FAILED_TO_CREATE_ACTIVITY = "Failed to create the activity.";
+        public const string FAILED_TO_DELETE_ACTIVITY = "Failed to delete the activity.";
+        public const string UNAUTHORIZED_CLIENT = "Unauthorized client.";
+        public const string API_KEY_NOT_PROVIDED = "API Key was not provided.";
+        public const string API_KEY_NEEDED = "API Key needed to access the endpoints. X-Api-Key: My_API_Key";
+        public const string FAILED_TO_UPDATE_ACTIVITY = "Failed to update activity.";
         public const string SEARCH_PLACEHOLDER = "Search...";
         public const string NO_RESULTS_FOUND = "No results found.";
         public const string LOADING = "Loading...";

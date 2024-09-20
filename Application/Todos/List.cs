@@ -10,7 +10,7 @@ namespace Application.Todos
     {
         public class Query : IRequest<Result<PagedList<Todo>>>
         { 
-            public TodoParams Params { get; set; }
+            public required TodoParams Params { get; set; }
         };
 
         public class Handler(DataContext context) : IRequestHandler<Query, Result<PagedList<Todo>>>

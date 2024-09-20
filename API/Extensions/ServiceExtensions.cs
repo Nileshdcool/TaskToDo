@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Domain;
 
 namespace API.Extensions
 {
@@ -21,7 +22,7 @@ namespace API.Extensions
             {
                 options.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
                 {
-                    Description = "API Key needed to access the endpoints. X-Api-Key: My_API_Key",
+                    Description = Messages.API_KEY_NEEDED,
                     In = ParameterLocation.Header,
                     Name = "X-Api-Key",
                     Type = SecuritySchemeType.ApiKey,
@@ -56,7 +57,11 @@ namespace API.Extensions
             {
                 opt.AddPolicy("CorsPolicy", policy =>
                 {
-                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000");
+                    var clientBaseUrl = configuration.GetSection("ClientSettings:BaseUrl").Value;
+                    if (!string.IsNullOrEmpty(clientBaseUrl))
+                    {
+                        policy.AllowAnyHeader().AllowAnyMethod().WithOrigins(clientBaseUrl);
+                    }
                 });
             });
 

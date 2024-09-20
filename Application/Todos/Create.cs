@@ -29,7 +29,7 @@ namespace Application.Todos
             {
                 _context.Todos.Add(request.Todo);
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
-                if (!result) return Result<Unit>.Failure("Failed to create activity");
+                if (!result) return Result<Unit>.Failure(Messages.FAILED_TO_CREATE_ACTIVITY);
                 return Result<Unit>.Success(Unit.Value);
             }
         }

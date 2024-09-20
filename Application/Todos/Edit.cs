@@ -32,7 +32,7 @@ namespace Application.Todos
                 var todo = await _context.Todos.FindAsync([request.Todo.Id], cancellationToken: cancellationToken) ?? throw new Exception("Todo not found");
                 _mapper.Map(request.Todo, todo);
                 var result = await _context.SaveChangesAsync(cancellationToken) > 0;
-                if (!result) return Result<Unit>.Failure("Failed to update activity");
+                if (!result) return Result<Unit>.Failure(Messages.FAILED_TO_UPDATE_ACTIVITY);
                 return Result<Unit>.Success(Unit.Value);
             }
         }
