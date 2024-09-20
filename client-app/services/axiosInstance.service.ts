@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5127/api',
+    baseURL: process.env.NEXT_PUBLIC_API_URL,
     headers: {
         'Content-Type': 'application/json',
     },
@@ -10,7 +10,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        config.headers['X-Api-Key'] = `secret-key`;
+        config.headers['X-Api-Key'] = process.env.NEXT_PUBLIC_API_KEY;
         return config;
     },
     (error) => {
