@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import '../styles/globals.css';
+import '../fontawesome';
 
 function MyApp({ Component, pageProps }: AppProps) {
     const { store, props } = wrapper.useWrappedStore(pageProps);

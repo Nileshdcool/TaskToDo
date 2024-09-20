@@ -10,7 +10,6 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
-        // Add any request interceptors here (e.g., adding auth tokens)
         return config;
     },
     (error) => {
@@ -23,9 +22,14 @@ axiosInstance.interceptors.response.use(
         return response;
     },
     (error) => {
-        // Handle errors globally
         if (error.response) {
-            toast.error(`Error: ${error.response.data.message || error.message}`);
+            const { data } = error.response;
+            if (data.errors) {
+                const validationMessages = Object.values(data.errors).flat().join(' ');
+                toast.error(`Validation Error: ${validationMessages}`);
+            } else {
+                toast.error(`Error: ${data.message || error.message}`);
+            }
         } else {
             toast.error(`Error: ${error.message}`);
         }

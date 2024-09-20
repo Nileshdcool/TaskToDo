@@ -12,6 +12,8 @@ import Confetti from 'react-confetti';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 import { differenceInDays, isBefore } from 'date-fns';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAddressCard, faCheckCircle, faTable } from '@fortawesome/free-solid-svg-icons';
 
 const HomePage = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -19,6 +21,7 @@ const HomePage = () => {
     const [isTaskCompleted, setIsTaskCompleted] = useState(false);
     const { width, height } = useWindowSize();
     const [activeTab, setActiveTab] = useState<'all' | 'completed' | 'nonCompleted'>('all');
+    const [viewMode, setViewMode] = useState<'currentView' | 'tableView'>('currentView');
 
     const showDeleteConfirm = (id: string) => {
         confirmAlert({
@@ -48,10 +51,12 @@ const HomePage = () => {
         });
     };
 
+    const toggleView = (mode: 'currentView' | 'tableView') => {
+        setViewMode(mode);
+    };
+
     useEffect(() => {
-        dispatch(fetchTodos())
-            .unwrap()
-            .catch((err) => toast.error(`Error fetching todos: ${err.message}`));
+        dispatch(fetchTodos());
     }, [dispatch]);
 
     const validationSchema = Yup.object({
@@ -67,8 +72,7 @@ const HomePage = () => {
             .unwrap()
             .then(() => {
                 toast.success('Todo created successfully');
-            })
-            .catch((err) => toast.error(`Error creating todo: ${err.message}`));
+            });
     };
 
     const handleUpdateTodo = (id: string, updatedTodo: Partial<Todo>) => {
@@ -104,7 +108,8 @@ const HomePage = () => {
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Todo List</h1>
             {error && <p className="text-red-500">{error}</p>}
-            <div className="bg-white shadow-md rounded p-4 mb-4">
+
+            <div className="bg-yellow-100 p-4 mb-4 rounded-lg shadow-lg">
                 <Formik
                     initialValues={{ name: '', description: '', comments: '', isComplete: false, dueDate: '' }}
                     validationSchema={validationSchema}
@@ -113,134 +118,129 @@ const HomePage = () => {
                         resetForm();
                     }}
                 >
-                    {({ errors, touched, handleSubmit, handleChange, values }) => (
-                        <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-                                    Name
-                                </label>
-                                <input
-                                    id="name"
-                                    name="name"
+                    {({ errors, touched }) => (
+                        <Form className="mb-4 flex flex-col md:flex-row">
+                            <div className="flex-grow">
+                                <Field
                                     type="text"
-                                    onChange={handleChange}
-                                    value={values.name}
-                                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                                        errors.name && touched.name ? 'border-red-500' : ''
-                                    }`}
+                                    name="name"
+                                    placeholder="Name"
+                                    className={`border p-2 mb-2 md:mb-0 md:mr-2 flex-grow ${errors.name && touched.name ? 'border-red-500' : ''}`}
                                 />
-                                {errors.name && touched.name && <p className="text-red-500 text-xs italic">{errors.name}</p>}
+                                <ErrorMessage name="name" component="div" className="text-red-500" />
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="description">
-                                    Description
-                                </label>
-                                <textarea
-                                    id="description"
+                            <div className="flex-grow">
+                                <Field
+                                    type="text"
                                     name="description"
-                                    onChange={handleChange}
-                                    value={values.description}
-                                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                                        errors.description && touched.description ? 'border-red-500' : ''
-                                    }`}
+                                    placeholder="Description"
+                                    className={`border p-2 mb-2 md:mb-0 md:mr-2 flex-grow ${errors.description && touched.description ? 'border-red-500' : ''}`}
                                 />
-                                {errors.description && touched.description && <p className="text-red-500 text-xs italic">{errors.description}</p>}
+                                <ErrorMessage name="description" component="div" className="text-red-500" />
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="comments">
-                                    Comments
-                                </label>
-                                <textarea
-                                    id="comments"
+                            <div className="flex-grow">
+                                <Field
+                                    type="text"
                                     name="comments"
-                                    onChange={handleChange}
-                                    value={values.comments}
-                                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    placeholder="Comments"
+                                    className={`border p-2 mb-2 md:mb-0 md:mr-2 flex-grow ${errors.comments && touched.comments ? 'border-red-500' : ''}`}
                                 />
+                                <ErrorMessage name="comments" component="div" className="text-red-500" />
                             </div>
-                            <div className="mb-4">
-                                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dueDate">
-                                    Due Date
-                                </label>
-                                <input
-                                    id="dueDate"
-                                    name="dueDate"
+                            <div className="flex-grow">
+                                <Field
                                     type="date"
-                                    onChange={handleChange}
-                                    value={values.dueDate}
-                                    className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
-                                        errors.dueDate && touched.dueDate ? 'border-red-500' : ''
-                                    }`}
+                                    name="dueDate"
+                                    placeholder="Due Date"
+                                    className={`border p-2 mb-2 md:mb-0 md:mr-2 flex-grow ${errors.dueDate && touched.dueDate ? 'border-red-500' : ''}`}
                                 />
-                                {errors.dueDate && touched.dueDate && <p className="text-red-500 text-xs italic">{errors.dueDate}</p>}
+                                <ErrorMessage name="dueDate" component="div" className="text-red-500" />
                             </div>
-                            <div className="col-span-1 md:col-span-2 flex items-center justify-between">
-                                <button
-                                    type="submit"
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out transform hover:scale-105 animate-pulse-slow"
-                                >
-                                    Add Todo
-                                </button>
-                            </div>
-                        </form>
+                            <button
+                                type="submit"
+                                className="bg-blue-500 text-white p-2 flex-grow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+                            >
+                                Add Todo
+                            </button>
+                        </Form>
                     )}
                 </Formik>
             </div>
-            <div className="bg-white shadow-md rounded p-4 mb-4">
-                <div className="flex space-x-4 mb-4">
-                    <button
-                        onClick={() => setActiveTab('all')}
-                        className={`p-2 ${activeTab === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                    >
-                        All
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('nonCompleted')}
-                        className={`p-2 ${activeTab === 'nonCompleted' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                    >
-                        Non-Completed
-                    </button>
-                    <button
-                        onClick={() => setActiveTab('completed')}
-                        className={`p-2 ${activeTab === 'completed' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
-                    >
-                        Completed
-                    </button>
+
+            {isTaskCompleted && <Confetti width={width} height={height} />}
+
+            <div className="bg-green-100 p-4 rounded-lg shadow-lg">
+                <div className="mb-4 flex flex-wrap gap-2 justify-between items-center">
+                    <div className="flex gap-2">
+                        <button
+                            onClick={() => setActiveTab('all')}
+                            className={`p-2 ${activeTab === 'all' ? 'bg-blue-500 text-white' : 'bg-gray-200'} hover:bg-blue-400 transition-colors duration-200`}
+                        >
+                            All
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('nonCompleted')}
+                            className={`p-2 ${activeTab === 'nonCompleted' ? 'bg-blue-500 text-white' : 'bg-gray-200'} hover:bg-blue-400 transition-colors duration-200`}
+                        >
+                            Non-Completed
+                        </button>
+                        <button
+                            onClick={() => setActiveTab('completed')}
+                            className={`p-2 ${activeTab === 'completed' ? 'bg-blue-500 text-white' : 'bg-gray-200'} hover:bg-blue-400 transition-colors duration-200`}
+                        >
+                            Completed
+                        </button>
+                    </div>
+                    <div className="flex gap-4">
+                        <FontAwesomeIcon 
+                            onClick={() => toggleView('currentView')} 
+                            icon={faAddressCard} 
+                            className="h-8 w-8 cursor-pointer hover:text-blue-500 transition-colors duration-200" 
+                        />
+                        <FontAwesomeIcon 
+                            onClick={() => toggleView('tableView')} 
+                            icon={faTable} 
+                            className="h-8 w-8 cursor-pointer hover:text-blue-500 transition-colors duration-200" 
+                        />
+                    </div>
                 </div>
-                <ul>
-                    {filteredTodos.map(todo => {
-                        const dueDate = todo.dueDate ? new Date(todo.dueDate) : new Date();
-                        const isOverdue = isBefore(dueDate, new Date()) && todo.isComplete === false;
-                        const isDueSoon = differenceInDays(dueDate, new Date()) <= 2 && !isOverdue && todo.isComplete === false;
-                        return (
-                            <li
-                                key={todo.id}
-                                className={`border p-2 mb-2 flex flex-col md:flex-row justify-between items-start md:items-center ${
-                                    isOverdue ? 'bg-red-300' : isDueSoon ? 'bg-orange-300' : ''
-                                }`}
-                            >
-                                <div className="flex-grow">
-                                    <h2 className="text-xl font-bold">{todo.name}</h2>
-                                    <p>{todo.description}</p>
-                                    <p>{todo.comments}</p>
-                                    <p>Due Date: {todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : 'No due date'}</p>
-                                    <p>{todo.isComplete ? 'Complete' : 'Incomplete'}</p>
-                                </div>
-                                <div className="flex mt-2 md:mt-0">
-                                    <button
-                                        onClick={() => handleUpdateTodo(todo.id, { ...todo, isComplete: !todo.isComplete })}
-                                        className="bg-green-500 text-white p-2 mr-2"
-                                    >
-                                        {todo.isComplete ? 'Mark Incomplete' : 'Mark Complete'}
-                                    </button>
-                                    <button onClick={() => showDeleteConfirm(todo.id)} className="bg-red-500 text-white p-2">
-                                        Delete
-                                    </button>
-                                </div>
-                            </li>
-                        );
-                    })}
-                </ul>
+                <div>
+                    <div>
+                        {filteredTodos.map(todo => {
+                            const dueDate = todo.dueDate ? new Date(todo.dueDate) : new Date();
+                            const isOverdue = isBefore(dueDate, new Date()) && todo.isComplete === false;
+                            const isDueSoon = differenceInDays(dueDate, new Date()) <= 2 && !isOverdue && todo.isComplete === false;
+                            return (
+                                <li key={todo.id}
+                                    className={`border p-4 mb-4 flex flex-col md:flex-row justify-between items-start md:items-center rounded-lg shadow-lg transition-transform transform hover:scale-105 ${isOverdue ? 'bg-red-300' : isDueSoon ? 'bg-orange-300' : 'bg-white'
+                                        }`}
+                                >
+                                    <div className="flex-grow">
+                                        <h2 className="text-xl font-bold">{todo.name}</h2>
+                                        <p>{todo.description}</p>
+                                        <p>{todo.comments}</p>
+                                        <p>Due Date: {todo.dueDate ? new Date(todo.dueDate).toLocaleDateString() : 'No due date'}</p>
+                                        <p>{todo.isComplete ? 'Complete' : 'Incomplete'}</p>
+                                    </div>
+                                    <div className="flex mt-2 md:mt-0">
+                                        <button
+                                            onClick={() => handleUpdateTodo(todo.id, { ...todo, isComplete: !todo.isComplete })}
+                                            className="bg-green-500 text-white p-2 mr-2 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+                                        >
+                                            {todo.isComplete ? 'Mark Incomplete' : 'Mark Complete'}
+                                        </button>
+                                        <button
+                                            onClick={() => showDeleteConfirm(todo.id)}
+                                            className="bg-red-500 text-white p-2 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-opacity-75"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </li>
+                            )
+                        })}
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -13,7 +13,7 @@ const Layout = ({ children }: LayoutProps) => {
             </header>
             <main className="flex-grow p-8">{children}</main>
             <footer className="bg-blue-600 text-white p-4 text-center">
-                <p>&copy; 2023 My Todo App</p>
+                <p>&copy; 2024 My Todo App</p>
             </footer>
         </div>
     );
