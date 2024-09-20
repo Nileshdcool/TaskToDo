@@ -15,6 +15,7 @@ import TodoList from '@/components/TodoList';
 import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import TodoFilters from '@/components/TodoFilters';
 import TodoStats from '@/components/TodoStats';
+import Pagination from '@/components/Pagination';
 
 const HomePage = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -24,6 +25,8 @@ const HomePage = () => {
     const [activeTab, setActiveTab] = useState<'all' | 'completed' | 'nonCompleted'>('all');
     const [viewMode, setViewMode] = useState<'currentView' | 'tableView'>('currentView');
     const [searchQuery, setSearchQuery] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 2;
 
     const showDeleteConfirm = (id: string) => {
         confirmAlert({
@@ -43,8 +46,8 @@ const HomePage = () => {
     };
 
     useEffect(() => {
-        dispatch(fetchTodos());
-    }, [dispatch]);
+        dispatch(fetchTodos({ pageNumber: currentPage, pageSize: itemsPerPage }));
+    }, [dispatch, currentPage]);
 
     const handleCreateTodo = (values: Omit<Todo, 'id'>) => {
         const todoWithId: Todo = { ...values, id: uuidv4() };
@@ -89,6 +92,10 @@ const HomePage = () => {
         setSearchQuery(query);
     };
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
+
     return (
         <div className="container mx-auto p-4">
             <h1 className="text-2xl font-bold mb-4">Todo List</h1>
@@ -107,6 +114,11 @@ const HomePage = () => {
             <div className="bg-green-100 p-4 rounded-lg shadow-lg">
                 <TodoFilters activeTab={activeTab} onTabChange={setActiveTab} viewMode={viewMode} onToggleView={toggleView} />
                 <TodoList todos={filteredTodos} onUpdate={handleUpdateTodo} onDelete={showDeleteConfirm} />
+                <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(filteredTodos.length / itemsPerPage)}
+                onPageChange={handlePageChange}
+            />
             </div>
         </div>
     );
@@ -117,7 +129,7 @@ export default HomePage;
 export const getServerSideProps = wrapper.getServerSideProps(
     (store) => async () => {
         try {
-            await store.dispatch(fetchTodos());
+            await store.dispatch(fetchTodos({ pageNumber: 1, pageSize: 10 }));
             return { props: {} };
         } catch (error) {
             return { props: {} };

@@ -20,22 +20,22 @@ const TodoStats: React.FC<TodoStatsProps> = ({ todos }) => {
     });
 
     return (
-        <div className="bg-blue-100 p-4 mb-4 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold">Todo Stats</h2>
+        <div className="bg-blue-100 p-6 mb-6 rounded-lg shadow-lg flex flex-col items-center">
+            <h2 className="text-2xl font-bold mb-4">Todo Stats</h2>
             {todos.length === 0 ? (
-                <div className="flex items-center">
-                    <Lottie options={defaultOptions(happyAnimationData)} height={50} width={50} />
-                    <p>No todos to display</p>
-                </div>
+            <div className="flex items-center space-x-4">
+                <Lottie options={defaultOptions(happyAnimationData)} height={70} width={70} />
+                <p className="text-lg">No todos to display</p>
+            </div>
             ) : (
-                <div className="flex items-center">
-                    {incompleteTodosCount === 0 ? (
-                        <Lottie options={defaultOptions(happyAnimationData)} height={50} width={50} />
-                    ) : (
-                        <Lottie options={defaultOptions(sadAnimationData)} height={50} width={50} />
-                    )}
-                    <p>{incompleteTodosCount} items left to complete</p>
-                </div>
+            <div className="flex items-center space-x-4">
+                {incompleteTodosCount === 0 ? (
+                <Lottie options={defaultOptions(happyAnimationData)} height={70} width={70} />
+                ) : (
+                <Lottie options={defaultOptions(sadAnimationData)} height={70} width={70} />
+                )}
+                <p className="text-lg">{incompleteTodosCount} items left to complete</p>
+            </div>
             )}
         </div>
     );

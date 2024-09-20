@@ -3,11 +3,11 @@ import * as Yup from 'yup';
 import FormField from './FormField';
 
 const validationSchema = Yup.object({
-  name: Yup.string().required('Required'),
-  description: Yup.string().required('Required'),
-  comments: Yup.string(),
+  name: Yup.string().required('Name is required'),
+  description: Yup.string().required('Description is required'),
+  comments: Yup.string().required('comments is required'),
   isComplete: Yup.boolean(),
-  dueDate: Yup.date().required('Required'),
+  dueDate: Yup.date().required('Due date is required'),
 });
 
 interface TodoFormProps {

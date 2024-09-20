@@ -9,8 +9,8 @@ const initialState: TodoState = {
     error: null,
 };
 
-export const fetchTodos = createAsyncThunk('todos/fetchTodos', async () => {
-    return await fetchTodosService();
+export const fetchTodos = createAsyncThunk('todos/fetchTodos', async ({ pageNumber, pageSize }: { pageNumber: number, pageSize: number }) => {
+    return await fetchTodosService(pageNumber,pageSize);
 });
 
 export const createTodo = createAsyncThunk('todos/createTodo', async (newTodo: Todo) => {

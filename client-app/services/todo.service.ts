@@ -1,8 +1,8 @@
 import { Todo } from '@/types/todo.interface';
 import axiosInstance from './axiosInstance.service';
 
-export const fetchTodos = async () => {
-    const response = await axiosInstance.get('/Todo');
+export const fetchTodos = async (pageNumber:any,pageSize:any) => {
+    const response = await axiosInstance.get(`/Todo?pageNumber=${pageNumber}&pageSize=${pageSize}`);
     return response.data;
 };
 
