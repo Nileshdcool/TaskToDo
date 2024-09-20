@@ -1,9 +1,6 @@
-import { ReactNode } from "react";
-import Logo from "../Logo";
 
-interface LayoutProps {
-    children: ReactNode;
-}
+import Logo from "../Logo";
+import {LayoutProps} from "../../types/layout-props.interface";
 
 const Layout = ({ children }: LayoutProps) => {
     return (

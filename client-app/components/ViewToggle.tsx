@@ -1,10 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAddressCard, faTable } from '@fortawesome/free-solid-svg-icons';
-
-interface ViewToggleProps {
-    viewMode: 'currentView' | 'tableView';
-    onToggle: (mode: 'currentView' | 'tableView') => void;
-}
+import { ViewToggleProps } from '@/types/view-toggle-props.interface';
 
 const ViewToggle: React.FC<ViewToggleProps> = ({ viewMode, onToggle }) => {
     return (

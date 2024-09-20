@@ -1,11 +1,6 @@
 // client-app/components/Pagination.tsx
+import { PaginationProps } from '@/types/pagination-props.interface';
 import React from 'react';
-
-interface PaginationProps {
-    currentPage: number;
-    totalPages: number;
-    onPageChange: (page: number) => void;
-}
 
 const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages, onPageChange }) => {
     const handlePrevious = () => {

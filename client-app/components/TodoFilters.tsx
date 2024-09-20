@@ -1,12 +1,6 @@
 import TodoTabs from "./TodoTabs";
 import ViewToggle from "./ViewToggle";
-
-interface TodoFiltersProps {
-    activeTab: 'all' | 'completed' | 'nonCompleted';
-    onTabChange: (tab: 'all' | 'completed' | 'nonCompleted') => void;
-    viewMode: 'currentView' | 'tableView';
-    onToggleView: (mode: 'currentView' | 'tableView') => void;
-}
+import { TodoFiltersProps } from '@/types/todo-filter-props.interface';
 
 const TodoFilters: React.FC<TodoFiltersProps> = ({ activeTab, onTabChange, viewMode, onToggleView }) => {
     return (

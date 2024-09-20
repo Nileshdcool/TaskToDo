@@ -10,6 +10,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
     (config) => {
+        config.headers['X-Api-Key'] = `secret-key`;
         return config;
     },
     (error) => {

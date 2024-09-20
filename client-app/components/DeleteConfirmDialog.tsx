@@ -1,16 +1,13 @@
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-
-interface DeleteConfirmDialogProps {
-    onConfirm: () => void;
-    onCancel: () => void;
-}
+import {DeleteConfirmDialogProps} from '@/types/delete-confirm-dialog-props.interface';
+import { MESSAGES } from '@/constants/messages';
 
 const DeleteConfirmDialog: React.FC<DeleteConfirmDialogProps> = ({ onConfirm, onCancel }) => {
     return (
         <div className="custom-confirm-alert">
-            <h1>Confirm to delete</h1>
-            <p>Are you sure you want to delete this todo?</p>
+            <h1>{MESSAGES.CONFIRM_TO_DELETE}</h1>
+            <p>{MESSAGES.CONFIRM_DELETE}</p>
             <div className="button-group">
                 <button onClick={onConfirm} className="confirm-button">Yes</button>
                 <button onClick={onCancel} className="cancel-button">No</button>

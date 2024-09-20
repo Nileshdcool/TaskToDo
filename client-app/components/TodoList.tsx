@@ -1,11 +1,5 @@
-import { Todo } from '@/types/todo.interface';
 import TodoItem from './TodoItem';
-
-interface TodoListProps {
-    todos: Todo[];
-    onUpdate: (id: string, updatedTodo: Partial<Todo>) => void;
-    onDelete: (id: string) => void;
-}
+import { TodoListProps } from '@/types/todo-list-props.interface';
 
 const TodoList: React.FC<TodoListProps> = ({ todos, onUpdate, onDelete }) => {
     return (

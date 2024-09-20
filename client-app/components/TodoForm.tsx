@@ -1,25 +1,18 @@
 import { Formik, Form } from 'formik';
-import * as Yup from 'yup';
 import FormField from './FormField';
+import { TodoFormProps } from '@/types/todo-form-props.interface';
+import { validationSchema } from '@/schemas/todo-validation.schema';
 
-const validationSchema = Yup.object({
-  name: Yup.string().required('Name is required'),
-  description: Yup.string().required('Description is required'),
-  comments: Yup.string().required('comments is required'),
-  isComplete: Yup.boolean(),
-  dueDate: Yup.date().required('Due date is required'),
-});
-
-interface TodoFormProps {
-  handleCreateTodo: (todo: { name: string; description: string; comments?: string; isComplete: boolean; dueDate: Date }) => void;
-}
 
 const TodoForm: React.FC<TodoFormProps> = ({ handleCreateTodo }) => (
   <Formik
     initialValues={{ name: '', description: '', comments: '', isComplete: false, dueDate: '' }}
     validationSchema={validationSchema}
     onSubmit={(values, { resetForm }) => {
-      handleCreateTodo({ ...values, dueDate: new Date(values.dueDate) });
+      handleCreateTodo({
+        ...values, dueDate: new Date(values.dueDate),
+        id: ''
+      });
       resetForm();
     }}
   >

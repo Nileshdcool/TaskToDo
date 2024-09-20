@@ -1,4 +1,4 @@
-using API.Middleware;
+using API.Middlewares;
 
 namespace API.Extensions
 {
@@ -16,6 +16,8 @@ namespace API.Extensions
             app.UseRouting();
             app.UseCors("CorsPolicy");
             app.UseAuthorization();
+
+            app.UseMiddleware<ApiKeyMiddleware>();
 
             app.UseMiddleware<ExceptionMiddleware>();
 

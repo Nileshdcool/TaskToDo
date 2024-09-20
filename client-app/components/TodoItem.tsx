@@ -1,12 +1,6 @@
-import { Todo } from '@/types/todo.interface';
+import { TodoItemProps } from '@/types/todo-item-props.interface';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { differenceInDays, isBefore } from 'date-fns';
-
-interface TodoItemProps {
-    todo: Todo;
-    onUpdate: (id: string, updatedTodo: Partial<Todo>) => void;
-    onDelete: (id: string) => void;
-}
 
 const TodoItem: React.FC<TodoItemProps> = ({ todo, onUpdate, onDelete }) => {
     const dueDate = todo.dueDate ? new Date(todo.dueDate) : new Date();

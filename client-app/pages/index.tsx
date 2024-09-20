@@ -16,17 +16,19 @@ import DeleteConfirmDialog from '@/components/DeleteConfirmDialog';
 import TodoFilters from '@/components/TodoFilters';
 import TodoStats from '@/components/TodoStats';
 import Pagination from '@/components/Pagination';
+import { Tab } from '@/enums/tab.enums';
 
 const HomePage = () => {
     const dispatch = useDispatch<AppDispatch>();
     const { todos, error } = useSelector((state: RootState) => state.todos);
     const [isTaskCompleted, setIsTaskCompleted] = useState(false);
     const { width, height } = useWindowSize();
-    const [activeTab, setActiveTab] = useState<'all' | 'completed' | 'nonCompleted'>('all');
+
+    const [activeTab, setActiveTab] = useState<Tab>(Tab.All);
     const [viewMode, setViewMode] = useState<'currentView' | 'tableView'>('currentView');
     const [searchQuery, setSearchQuery] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 2;
+    const itemsPerPage = 10;
 
     const showDeleteConfirm = (id: string) => {
         confirmAlert({
@@ -59,7 +61,7 @@ const HomePage = () => {
     };
 
     const handleUpdateTodo = (id: string, updatedTodo: Partial<Todo>) => {
-        setIsTaskCompleted(true);
+        updatedTodo?.isComplete ? setIsTaskCompleted(true) : setIsTaskCompleted(false);
         dispatch(updateTodo({ id, updatedTodo }))
             .unwrap()
             .then(() => {
@@ -98,25 +100,35 @@ const HomePage = () => {
 
     return (
         <div className="container mx-auto p-4">
-            <h1 className="text-2xl font-bold mb-4">Todo List</h1>
-            {error && <p className="text-red-500">{error}</p>}
+            <h1 className="text-2xl font-bold mb-4 text-center">Todo List</h1>
+            {error && <p className="text-red-500 text-center">{error}</p>}
 
             <div className="bg-yellow-100 p-4 mb-4 rounded-lg shadow-lg">
-                <TodoForm handleCreateTodo={handleCreateTodo} />
+            <TodoForm handleCreateTodo={handleCreateTodo} />
             </div>
 
             {isTaskCompleted && <Confetti width={width} height={height} />}
 
+            <div className="mb-4">
             <SearchBar onSearch={handleSearch} />
+            </div>
 
-            <TodoStats todos={todos} ></TodoStats>
+            <div className="mb-4">
+            <TodoStats todos={todos} />
+            </div>
 
-            <div className="bg-green-100 p-4 rounded-lg shadow-lg">
-                <TodoFilters activeTab={activeTab} onTabChange={setActiveTab} viewMode={viewMode} onToggleView={toggleView} />
-                <TodoList todos={filteredTodos} onUpdate={handleUpdateTodo} onDelete={showDeleteConfirm} />
-                <Pagination
+            <div className="bg-green-100 p-4 rounded-lg shadow-lg mb-4">
+            <TodoFilters activeTab={activeTab} onTabChange={setActiveTab} viewMode={viewMode} onToggleView={toggleView} />
+            </div>
+
+            <div className="bg-white p-4 rounded-lg shadow-lg mb-4">
+            <TodoList todos={filteredTodos} onUpdate={handleUpdateTodo} onDelete={showDeleteConfirm} />
+            </div>
+
+            <div className="flex justify-center">
+            <Pagination
                 currentPage={currentPage}
-                totalPages={Math.ceil(filteredTodos.length / itemsPerPage)}
+                totalPages={Math.ceil(todos.length / itemsPerPage)}
                 onPageChange={handlePageChange}
             />
             </div>

@@ -1,9 +1,6 @@
+import { ErrorProps } from "@/types/error-props.interface";
 import { NextPageContext } from "next";
 import Link from "next/link";
-
-interface ErrorProps {
-  statusCode: number;
-}
 
 const Error = ({ statusCode }: ErrorProps) => {
   return (

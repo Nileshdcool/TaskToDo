@@ -1,12 +1,5 @@
+import { FormFieldProps } from '@/types/form-field-props.interface';
 import { Field, ErrorMessage } from 'formik';
-
-interface FormFieldProps {
-    name: string;
-    type: string;
-    placeholder: string;
-    errors: any;
-    touched: any;
-}
 
 const FormField: React.FC<FormFieldProps> = ({ name, type, placeholder, errors, touched }) => (
     <div className="flex-grow">

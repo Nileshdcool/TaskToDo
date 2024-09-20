@@ -19,7 +19,9 @@ export const createTodo = createAsyncThunk('todos/createTodo', async (newTodo: T
 });
 
 export const updateTodo = createAsyncThunk('todos/updateTodo', async ({ id, updatedTodo }: { id: string, updatedTodo: Partial<Todo> }) => {
-    return await updateTodoService(id, updatedTodo);
+    await updateTodoService(id, updatedTodo);
+    const updatedTodoWithId = { ...updatedTodo, id };
+    return updatedTodoWithId;
 });
 
 export const deleteTodo = createAsyncThunk('todos/deleteTodo', async (id: string) => {
