@@ -22,6 +22,8 @@ dotnet new -l
 docker-compose build
 docker-compose up
 
+dotnet publish -c Release -o ./bin/Publish
+
 ## Entity Framework Commands 
 
 dotnet ef migrations add InitialCreate -s API -p Persistence
