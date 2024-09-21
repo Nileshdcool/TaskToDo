@@ -6,7 +6,7 @@
 
 ## Application Overview
 
-![TaskToDo Screenshot](./path-to-screenshot.png)
+![TaskToDo Screenshot](./TaskToDo.PNG)
 
 > *Screenshot of the application interface. Update the link to the actual image.*
 
