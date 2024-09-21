@@ -1,6 +1,16 @@
 # TaskToDo
 This app is resposible for creating daily tasks and marking them as completed once done.
 
+# How to Start
+
+cd API
+dotnet run
+
+cd..
+
+cd client-app
+npm run dev
+
 ## Commands
 
 dotnet watch --no-hot-reload
