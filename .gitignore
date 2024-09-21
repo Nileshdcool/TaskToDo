@@ -487,3 +487,4 @@ $RECYCLE.BIN/
 /API/todo.db-shm
 /client-app/.env.production
 /client-app/.env.development
+/API/appsettings.Development.json
