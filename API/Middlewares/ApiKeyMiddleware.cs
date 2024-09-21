@@ -1,17 +1,10 @@
 namespace API.Middlewares
 {
-    public class ApiKeyMiddleware
+    public class ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
     {
-        private readonly RequestDelegate _next;
-        private readonly string? _apiKeyHeaderName;
-        private readonly string? _apiKey;
-
-        public ApiKeyMiddleware(RequestDelegate next, IConfiguration configuration)
-        {
-            _next = next;
-            _apiKeyHeaderName = configuration["ApiKeySettings:HeaderName"];
-            _apiKey = configuration["ApiKeySettings:Key"];
-        }
+        private readonly RequestDelegate _next = next;
+        private readonly string? _apiKeyHeaderName = configuration["ApiKeySettings:HeaderName"];
+        private readonly string? _apiKey = configuration["ApiKeySettings:Key"];
 
         public async Task InvokeAsync(HttpContext context)
         {

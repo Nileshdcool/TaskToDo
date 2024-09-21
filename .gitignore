@@ -485,3 +485,5 @@ $RECYCLE.BIN/
 *.swp
 /API/todo.db-wal
 /API/todo.db-shm
+/client-app/.env.production
+/client-app/.env.development
