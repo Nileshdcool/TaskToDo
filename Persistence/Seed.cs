@@ -11,14 +11,14 @@ namespace Persistence
             var todos = new List<Todo>
             {
                 new() {
-                    Name = "Task 1",
+                    Name = "Task 1 for module auth module",
                     Description = "Auth Module",
                     Comments = "This is a comment",
                     IsComplete = false,
                     DueDate = DateTime.Now.AddDays(7),
                 },
                 new() {
-                    Name = "Task 2",
+                    Name = "Task 2 for dashboard module",
                     Description = "Dashboard UI",
                     Comments = "This is a comment",
                     IsComplete = false,
