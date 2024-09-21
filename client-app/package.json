@@ -31,12 +31,12 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@types/uuid": "^10.0.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-lottie": "^1.2.10",
     "@types/redux": "^3.6.0",
+    "@types/uuid": "^10.0.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.12",
     "postcss": "^8",
