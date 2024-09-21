@@ -8,8 +8,6 @@
 
 ![TaskToDo Screenshot](./TaskToDo.PNG)
 
-> *Screenshot of the application interface. Update the link to the actual image.*
-
 ---
 
 ## How to Start the Application
