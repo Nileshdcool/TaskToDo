@@ -9,7 +9,9 @@ dotnet run
 cd..
 
 cd client-app
-npm i
+
+npm install
+
 npm run dev
 
 ## Commands
